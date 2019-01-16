@@ -1,9 +1,9 @@
 
 # Maintainer: WinterMute <davem@devkitpro.org>
-pkgname=3ds-zlib
+pkgname=nds-zlib
 pkgver=1.2.11
-pkgrel=2
-pkgdesc='Deflate compression method library (for Nintendo 3DS homebrew development)'
+pkgrel=1
+pkgdesc='Deflate compression method library (for Nintendo DS homebrew development)'
 arch=('any')
 url='http://www.zlib.net/'
 license=('zlib')
@@ -11,16 +11,17 @@ options=(!strip libtool staticlibs)
 source=("http://downloads.devkitpro.org/packages/sources/zlib-$pkgver.tar.xz")
 sha256sums=('4ff941449631ace0d4d203e3483be9dbc9da454084111f97ea0a2114e19bf066')
 makedepends=('devkitpro-pkgbuild-helpers')
-groups=('3ds-portlibs')
+groups=('nds-portlibs')
 
 build() {
   cd zlib-$pkgver
 
-  source /opt/devkitpro/3dsvars.sh
+  source /opt/devkitpro/ndsvars.sh
 
   CHOST=arm-none-eabi \
     ./configure --prefix="${PORTLIBS_PREFIX}" --static
   make libz.a # only build library, no programs
+
 
   # libminizip
   cd contrib/minizip
@@ -34,7 +35,7 @@ build() {
 package() {
   cd zlib-$pkgver
 
-  source /opt/devkitpro/3dsvars.sh
+  source /opt/devkitpro/ndsvars.sh
 
   make DESTDIR="$pkgdir" install
   # license

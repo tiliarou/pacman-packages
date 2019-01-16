@@ -1,35 +1,34 @@
 
 # Maintainer: Dave Murphy <davem@devkitpro.org>
 
-pkgname=('ppc-bzip2')
+pkgname=('nds-bzip2')
 pkgver=1.0.6
-pkgrel=1
+pkgrel=2
 pkgdesc="A high-quality data compression program"
 arch=('any')
 license=('custom')
 url="http://www.bzip.org"
 options=(!strip libtool staticlibs)
-source=(http://http.debian.net/debian/pool/main/b/bzip2/bzip2_$pkgver.orig.tar.bz2)
+source=(https://fossies.org/linux/misc/bzip2-$pkgver.tar.gz)
 sha256sums=('a2848f34fcd5d6cf47def00461fcb528a0484d8edef8208d6d2e2909dc61d9cd')
-makedepends=('switch-pkg-config' 'devkitpro-pkgbuild-helpers')
+makedepends=('3ds-pkg-config' 'devkitpro-pkgbuild-helpers')
+groups=('nds-portlibs')
 
 build() {
 
-  source /opt/devkitpro/devkitppc.sh
-  source /opt/devkitpro/ppcvars.sh
+  source /opt/devkitpro/ndsvars.sh
 
   make -C "$srcdir/bzip2-$pkgver" \
-  CC=${TOOL_PREFIX}gcc \
-  AR=${TOOL_PREFIX}ar \
-  RANLIB=${TOOL_PREFIX}ranlib \
+  CC=arm-none-eabi-gcc \
+  AR=arm-none-eabi-ar \
+  RANLIB=arm-none-eabi-ranlib \
   CPPFLAGS="${CPPFLAGS}" \
   CFLAGS="-D_FILE_OFFSET_BITS=64 -Winline ${CFLAGS}" libbz2.a
 
 }
 
 package() {
-  source /opt/devkitpro/devkitppc.sh
-  source /opt/devkitpro/ppcvars.sh
+  source /opt/devkitpro/ndsvars.sh
 
   install -Dm 644 "$srcdir/bzip2-$pkgver"/LICENSE -t "${pkgdir}/${PORTLIBS_PREFIX}/licenses/${pkgname}"
   install -Dm 644 "$srcdir/bzip2-$pkgver"/bzlib.h -t "${pkgdir}/${PORTLIBS_PREFIX}/include/"
